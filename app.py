@@ -5,19 +5,24 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 
-# ========== TETAPAN HALAMAN ==========
+# ========== TETAPAN ==========
 st.set_page_config(
     page_title="Chart Analysis",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# ========== CSS: Butang Terapung ==========
+# ========== CSS: Beri ruang di atas supaya carta tak bertindih butang ==========
 st.markdown("""
 <style>
-div[data-testid="stHorizontalBlock"] > div:first-child {position:fixed; top:8px; left:8px; z-index:999;}
-div[data-testid="stHorizontalBlock"] > div:nth-child(2) {position:fixed; top:8px; right:8px; z-index:999;}
-div[data-testid="stHorizontalBlock"] > div:nth-child(3) {position:fixed; top:48px; left:8px; z-index:999;}
+/* Beri ruang kosong di paling atas */
+.block-container {padding-top: 60px !important; padding-bottom: 20px !important;}
+
+/* Butang terapung di atas */
+div[data-testid="stHorizontalBlock"] > div:nth-child(1) {position:fixed; top:10px; left:10px; z-index:999;}
+div[data-testid="stHorizontalBlock"] > div:nth-child(2) {position:fixed; top:10px; right:10px; z-index:999;}
+div[data-testid="stHorizontalBlock"] > div:nth-child(3) {position:fixed; top:55px; left:10px; z-index:999;}
+
 div[data-testid="stExpander"] {background-color:#f0f2f6; border-radius:10px; padding:12px;}
 button[kind="primary"] {width:100% !important;}
 </style>
@@ -76,7 +81,7 @@ if chat_buka:
         if st.button('Hantar', use_container_width=True):
             st.write(f'Awak: {mesej}')
 
-# ========== DATA ANALISIS CONTOH ==========
+# ========== DATA CONTOH ==========
 @st.cache_data
 def buat_data():
     tarikh = pd.date_range(start='2024-01-01', periods=30, freq='D')
@@ -91,8 +96,10 @@ def buat_data():
 df = buat_data()
 warna = st.session_state['warna']
 
-# ========== BAHAGIAN ATAS: 2 CARTA INTERAKTIF ==========
-st.markdown('<br>', unsafe_allow_html=True)
+# ========== RUANG KOSONG SUPAYA CARTA TAK MELANGGAR BUTANG ==========
+st.write('')
+
+# ========== BAHAGIAN ATAS: 2 CARTA ==========
 st.subheader('📊 Carta Utama — Tekan untuk pilih')
 
 c1, c2 = st.columns(2, gap='medium')
@@ -132,7 +139,7 @@ with e1: nama_carta = st.text_input('Nama Carta', value=st.session_state['carta_
 with e2: jenis_papar = st.selectbox('Jenis Paparan', ['Garis', 'Bar'])
 with e3: tunjuk_data = st.checkbox('Tunjuk Jadual Data')
 
-# Carta Besar di Ruang Edit
+# Carta Besar
 st.markdown(f'### 📈 {nama_carta} — {st.session_state["tf"]}')
 
 if st.session_state['carta_dipilih'] == 'Carta 1':
@@ -145,10 +152,9 @@ if jenis_papar == 'Garis':
 else:
     fig_besar = px.bar(df, x='Tarikh', y=y_col, color_discrete_sequence=[warna], title=f'{nama_carta} — {y_col}')
 
-fig_besar.update_layout(height=300, margin=dict(l=10, r=10, t=40, b=10))
+fig_besar.update_layout(height=280, margin=dict(l=10, r=10, t=40, b=10))
 st.plotly_chart(fig_besar, use_container_width=True)
 
-# Tunjuk data jika dipilih
 if tunjuk_data:
     st.dataframe(df, use_container_width=True, height=150)
 
