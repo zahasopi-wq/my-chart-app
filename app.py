@@ -11,11 +11,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ========== CSS: RUANG ATAS LEBIH BESAR ==========
+# ========== CSS: YANG DIUBAH = 180px ==========
 st.markdown("""
 <style>
 .block-container {
-    padding-top: 150px !important;
+    padding-top: 180px !important;
     padding-left: 15px !important;
     padding-right: 15px !important;
 }
@@ -105,8 +105,8 @@ if chat_buka:
         if st.button('Hantar', use_container_width=True):
             st.write(f'Awak: {mesej}')
 
-# ========== RUANG KOSONG SUPAYA TAK TERTUTUP ==========
-st.markdown('<br><br><br><br>', unsafe_allow_html=True)
+# ========== RUANG KOSONG TAMBAHAN ==========
+st.markdown('<br><br><br><br><br>', unsafe_allow_html=True)
 
 # ========== DATA CONTOH ==========
 @st.cache_data
