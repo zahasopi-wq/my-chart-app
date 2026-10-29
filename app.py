@@ -11,23 +11,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ========== CSS: Ruang atas & susunan responsif ==========
+# ========== CSS: RUANG ATAS LEBIH BESAR ==========
 st.markdown("""
 <style>
-.block-container {padding-top: 65px !important; padding-left: 15px !important; padding-right: 15px !important;}
+/* Ruang kosong di atas — ditambah banyak sikit */
+.block-container {
+    padding-top: 90px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
 
 /* Butang terapung */
-div[data-testid="stHorizontalBlock"] > div:nth-child(1) {position:fixed; top:10px; left:10px; z-index:999;}
-div[data-testid="stHorizontalBlock"] > div:nth-child(2) {position:fixed; top:10px; right:10px; z-index:999;}
-div[data-testid="stHorizontalBlock"] > div:nth-child(3) {position:fixed; top:55px; left:10px; z-index:999;}
+div[data-testid="stHorizontalBlock"] > div:nth-child(1) {position:fixed; top:12px; left:12px; z-index:999;}
+div[data-testid="stHorizontalBlock"] > div:nth-child(2) {position:fixed; top:12px; right:12px; z-index:999;}
+div[data-testid="stHorizontalBlock"] > div:nth-child(3) {position:fixed; top:58px; left:12px; z-index:999;}
 
 div[data-testid="stExpander"] {background-color:#f0f2f6; border-radius:10px; padding:12px;}
 button[kind="primary"] {width:100% !important;}
-
-/* Carta penuh lebar bila skrin kecil */
-@media (max-width: 768px) {
-    div[data-testid="column"] {width: 100% !important;}
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -74,6 +74,9 @@ if chat_buka:
         if st.button('Hantar'):
             st.write(f'Awak: {mesej}')
 
+# ========== RUANG KOSONG TAMBAHAN ==========
+st.markdown('<br><br>', unsafe_allow_html=True)
+
 # ========== DATA ==========
 @st.cache_data
 def buat_data():
@@ -85,11 +88,11 @@ def buat_data():
 df = buat_data()
 warna = st.session_state['warna']
 
-# ========== CARTA: SATU DI ATAS SATU DI BAWAH ==========
-st.write('')
+# ========== CARTA ==========
 st.subheader('📊 Carta Utama')
+st.markdown('---')
 
-# Carta 1 — Penuh Lebar
+# Carta 1
 st.markdown('**📈 Carta 1 — Tekan untuk pilih**')
 fig1 = px.line(df, x='Tarikh', y='Nilai A', color_discrete_sequence=[warna])
 fig1.update_layout(height=240, margin=dict(l=10, r=10, t=20, b=10))
@@ -97,9 +100,9 @@ st.plotly_chart(fig1, use_container_width=True)
 if st.button('✅ Pilih Carta 1', use_container_width=True):
     st.session_state['carta_dipilih'] = 'Carta 1'
 
-st.divider()
+st.markdown('<br>', unsafe_allow_html=True)
 
-# Carta 2 — Penuh Lebar
+# Carta 2
 st.markdown('**📊 Carta 2 — Tekan untuk pilih**')
 fig2 = px.bar(df, x='Tarikh', y='Nilai B', color_discrete_sequence=[warna])
 fig2.update_layout(height=240, margin=dict(l=10, r=10, t=20, b=10))
@@ -107,9 +110,10 @@ st.plotly_chart(fig2, use_container_width=True)
 if st.button('✅ Pilih Carta 2', use_container_width=True):
     st.session_state['carta_dipilih'] = 'Carta 2'
 
-st.divider()
+st.markdown('<br>', unsafe_allow_html=True)
+st.markdown('---')
 
-# ========== EDIT CARTA — BESAR ==========
+# ========== EDIT CARTA ==========
 st.subheader(f'✏️ Edit Carta — {st.session_state["carta_dipilih"]}')
 
 e1, e2, e3 = st.columns(3)
@@ -117,6 +121,7 @@ with e1: nama_carta = st.text_input('Nama Carta', value=st.session_state['carta_
 with e2: jenis_papar = st.selectbox('Jenis', ['Garis', 'Bar'])
 with e3: tunjuk_data = st.checkbox('Tunjuk Data')
 
+st.markdown('<br>', unsafe_allow_html=True)
 st.markdown(f'### 📈 {nama_carta} — {st.session_state["tf"]}')
 
 y_col = 'Nilai A' if st.session_state['carta_dipilih'] == 'Carta 1' else 'Nilai B'
