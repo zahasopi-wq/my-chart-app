@@ -11,11 +11,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ========== CSS: YANG DIUBAH = 180px ==========
+# ========== CSS: YANG DIUBAH = 260px ==========
 st.markdown("""
 <style>
 .block-container {
-    padding-top: 180px !important;
+    padding-top: 260px !important;
     padding-left: 15px !important;
     padding-right: 15px !important;
 }
